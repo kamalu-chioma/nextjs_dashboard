@@ -7,6 +7,7 @@ import { lusitana } from '@/app/ui/fonts';
 import { fetchRevenue, fetchLatestInvoices } from '@/app/lib/data';
 import { Revenue } from '../lib/definitions';
 
+
 type Invoice = {
   amount: string;
   id: string;
@@ -25,18 +26,22 @@ export default function Page() {
 
   useEffect(() => {
     async function loadData() {
-      const revenueData = await fetchRevenue();
-      const invoicesData = await fetchLatestInvoices();
-      setRevenue(revenueData ?? []);
-      setLatestInvoices(invoicesData);
-      // Assume you have a way to calculate or fetch these values:
-      setTotalPaidInvoices(1000); // Example static value
-      setTotalPendingInvoices(500); // Example static value
-      setNumberOfInvoices(150);     // Example static value
-      setNumberOfCustomers(50);     // Example static value
+      try {
+        const revenueData = await fetchRevenue();
+        const invoicesData = await fetchLatestInvoices();
+        setRevenue(revenueData ?? []);
+        setLatestInvoices(invoicesData);
+        setTotalPaidInvoices(1000); // Hardcoded values for now
+        setTotalPendingInvoices(500); 
+        setNumberOfInvoices(150);     
+        setNumberOfCustomers(50);     
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
     }
     loadData();
   }, []);
+  
 
   return (
     <main>
